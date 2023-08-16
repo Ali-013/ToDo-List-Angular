@@ -1,0 +1,126 @@
+<div class="container-fluid">
+  <div class="row" style="margin-top: 10px">
+    
+    <div class="col-md-8">
+      <div class="row">
+
+        <div cdkDropListGroup>
+          <div class="col-md">
+            <!-- for Todo -->
+            <div class="example-container">
+              <h4 class="head">TODOS <span *ngIf="tasks.length>0"> - {{tasks.length}}</span></h4>
+              <div cdkDropList [cdkDropListData]="tasks" class="example-list" (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of tasks; let i = index" cdkDrag>
+                  <div class="item-container">
+                    {{item.description}}
+                    <br>
+                    <div class="box">
+
+
+                      <button mat-icon-button color="primary" (click)="onEdit(item,i)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteTask(i)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-md">
+              <!-- for in progress todos -->
+              <div class="example-container">
+                <h4 class="head">IN PROGRESS<span *ngIf="inprogress.length>0"> - {{inprogress.length}}</span></h4>
+                <div cdkDropList [cdkDropListData]="inprogress" class="example-list"
+                  (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor="let item of inprogress; let i = index" cdkDrag>
+                    <div class="item-container">
+                      {{item.description}}
+                      <br>
+                      <div class="box">
+                        <button mat-icon-button class="green-button" (click)="markDone(i)">
+                          <mat-icon>check_circle</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" (click)="onEditP(item,i)">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteProgressTask(i)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                      <div>
+                        <app-updateform></app-updateform>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="example-container">
+                <h4 class="head">COMPLETED<span *ngIf="done.length>0"> - {{done.length}}</span></h4>
+                <div cdkDropList [cdkDropListData]="done" class="example-list" (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor="let item of done; let i = index" cdkDrag>
+                    <div class="item-container">
+                      {{item.description}}
+                      <br>
+                      <div class="box">
+                        <button mat-icon-button color="warn" (click)="deleteDoneTask(i)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- for completed todos -->
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3" id="firstCell">
+      <mat-card style="margin-top: 10px">
+        <form [formGroup]="todoForm">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label style="font-size: 125%; color: #000851;">New Task</mat-label>
+            <textarea [ngModel]="inputarea" name="inputarea" formControlName="item" matInput cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="20"
+              (input)="autosize.resizeToFitContent()" placeholder="Feeling to conquer a challenge?">
+            </textarea>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          </mat-form-field>
+          <button *ngIf="!Editable" (click)="addTask()" mat-fab extended [ngClass]="{'colorless': todoForm.invalid}"
+            [disabled]="todoForm.invalid" style="background-color: hsl(234, 100%, 16%); color: white; left: 60%;">
+            Task
+            <mat-icon>add</mat-icon>
+          </button>
+          <br>
+          <br>
+          <button *ngIf="!Editable" (click)="cancelTask()" mat-fab extended [ngClass]="{'colorless': todoForm.invalid}"
+            [disabled]="todoForm.invalid" style="background-color: hsl(234, 100%, 16%); color: white; left: 55%;">
+            Cancel
+            <mat-icon>cancel</mat-icon>
+          </button>
+          <button *ngIf="Editable" (click)="updateTask()" mat-fab extended [ngClass]="{'colorless': todoForm.invalid}"
+            [disabled]="todoForm.invalid" style="background-color: #000851; color: white; left: 60%;">
+            Update
+            <mat-icon>update</mat-icon>
+          </button>
+          <br>
+          <br>
+          <button *ngIf="Editable" (click)="cancelTask()" mat-fab extended [ngClass]="{'colorless': todoForm.invalid}"
+            [disabled]="todoForm.invalid" style="background-color: #000851; color: white; left: 60%;">
+            Cancel
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </form>
+      </mat-card>
+    </div>
+    
+  </div>
